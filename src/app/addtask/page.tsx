@@ -22,21 +22,27 @@ export default function AddTask() {
 		"music",
 		"busywork",
 	];
-        
+
 	const { register, handleSubmit } = useForm<TaskInput>();
 
 	const onSubmit: SubmitHandler<TaskInput> = async (data) => {
 		data.accessibility = data.accessibility / 100;
 
-		const formData = new FormData();
-		formData.append("input", data);
+		// const formData = new FormData();
+		// formData.append("input", JSON.stringify(data));
+		// const response = await fetch("/api/addtask", {
+		// 	method: "POST",
+		// 	body: formData,
+		// });
+		// console.log(response.json());
+		// IDEA ABORTED BECAUSE I FORGOT LOCAL STORAGE ONLY WORKS IN BROWSER / CLIENT
 
-		const response = await fetch("/api/addtask", {
-			method: "POST",
-			body: formData,
-		});
-
-		console.log(response.json());
+		try {
+			localStorage.setItem("taskData", JSON.stringify(data));
+            console.log("Inserted!")
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
