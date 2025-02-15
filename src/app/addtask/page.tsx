@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+// Will be using react hook form as I am used to using RHF.
+
 export default function AddTask() {
 	type TaskInput = {
 		activity: string;
@@ -44,7 +46,7 @@ export default function AddTask() {
 			const updatedTasks = [...existingTasks, data];
 			localStorage.setItem("taskData", JSON.stringify(updatedTasks));
 			console.log("Inserted!");
-            // using localstorage to make sure that items will still be there once user leaves
+			// using localstorage to make sure that items will still be there once user leaves
 		} catch (error) {
 			console.log(error);
 		}
@@ -58,19 +60,23 @@ export default function AddTask() {
 				<input type="submit" className="bg-white" /> */}
 				<div className="flex flex-col">
 					<label className="text-white text-left">Activity</label>
-					<input {...register("activity")} />
+					<input {...register("activity", { required: "true" })} />
 				</div>
 				<div className="flex flex-col">
 					<label className="text-white text-left">Price</label>
-					<input type="number" {...register("price")} />
+					<input type="number" {...register("price", { required: "true" })} />
 				</div>
 				<div className="flex flex-col text-white justify-between">
 					<label className="text-white text-center">Type</label>
-					{typeOptions.map((item,index) => {
+					{typeOptions.map((item, index) => {
 						return (
 							<div className="flex justify-between" key={index}>
 								{item}
-								<input type="radio" value={item} {...register("type")} />
+								<input
+									type="radio"
+									value={item}
+									{...register("type", { required: "true" })}
+								/>
 							</div>
 						);
 					})}
@@ -81,11 +87,16 @@ export default function AddTask() {
 				</div>
 				<div className="flex flex-col">
 					<label className="text-white text-left">Accessibility</label>
-					<input type="range" {...register("accessibility")} />
+					<input
+						type="range"
+						{...register("accessibility", { required: "true" })}
+					/>
 				</div>
 				<input type="submit" className="bg-white" />
 			</form>
-			<Link href={"/"}>Home</Link>
+			<Link href={"/"} className="underline">
+				Home
+			</Link>
 		</div>
 	);
 }
