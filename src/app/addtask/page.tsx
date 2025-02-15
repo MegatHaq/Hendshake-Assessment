@@ -11,36 +11,33 @@ export default function AddTask() {
 		accessibility: number;
 	};
 
-    const typeOptions: string[]= [
-        "education",
-        "recreational",
-        "social",
-        "diy",
-        "charity",
-        "cooking",
-        "relaxation",
-        "music",
-        "busywork"
-    ]
-
-	// 1. Activity (string)
-	// 2. Price (number)
-	// 3. Type (select)
-	// a. education
-	// b. recreational
-	// c. social
-	// d. diy
-	// e. charity
-	// f. cooking
-	// g. relaxation
-	// h. music
-	// i. busywork
-	// 4. Booking required (checkbox)
-	// 5. Accessibility (horizontal slider from 0.0 to 1.0)
-
+	const typeOptions: string[] = [
+		"education",
+		"recreational",
+		"social",
+		"diy",
+		"charity",
+		"cooking",
+		"relaxation",
+		"music",
+		"busywork",
+	];
+        
 	const { register, handleSubmit } = useForm<TaskInput>();
 
-	const onSubmit: SubmitHandler<TaskInput> = (data) => console.log(data);
+	const onSubmit: SubmitHandler<TaskInput> = async (data) => {
+		data.accessibility = data.accessibility / 100;
+
+		const formData = new FormData();
+		formData.append("input", data);
+
+		const response = await fetch("/api/addtask", {
+			method: "POST",
+			body: formData,
+		});
+
+		console.log(response.json());
+	};
 
 	return (
 		<div className="flex flex-col w-screen h-screen items-center justify-center">
@@ -59,9 +56,13 @@ export default function AddTask() {
 				<div className="flex flex-col text-white">
 					<label className="text-white text-left">Type</label>
 					{typeOptions.map((item) => {
-                        return <div className="flex">{item}
-                        <input type="radio" value={item} {...register('type')}/></div>
-                    })}
+						return (
+							<div className="flex">
+								{item}
+								<input type="radio" value={item} {...register("type")} />
+							</div>
+						);
+					})}
 				</div>
 				<div className="flex flex-col">
 					<label className="text-white text-left">Booking required</label>
@@ -71,7 +72,7 @@ export default function AddTask() {
 					<label className="text-white text-left">Accessibility</label>
 					<input type="range" {...register("accessibility")} />
 				</div>
-                <input type="submit" className="bg-white"/>
+				<input type="submit" className="bg-white" />
 			</form>
 			<Link href={"/"}>Home</Link>
 		</div>
