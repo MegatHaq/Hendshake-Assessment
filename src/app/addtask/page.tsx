@@ -2,18 +2,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { TaskInput } from "../lib/types";
 
 // Will be using react hook form as I am used to using RHF.
 
 export default function AddTask() {
-	type TaskInput = {
-		activity: string;
-		price: number;
-		type: string;
-		booking: boolean;
-		accessibility: number;
-	};
-
+	
 	const typeOptions: string[] = [
 		"education",
 		"recreational",
@@ -26,7 +20,11 @@ export default function AddTask() {
 		"busywork",
 	];
 
-	const { register, handleSubmit } = useForm<TaskInput>();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<TaskInput>();
 
     const [response,setResponse] = useState<string>()
 
@@ -97,10 +95,13 @@ export default function AddTask() {
 					/>
 				</div>
 				<div className="w-full flex justify-center">
-					<input type="submit" className="my-2 p-2 bg-blue-600 text-white rounded-md" />
+					<input
+						type="submit"
+						className="my-2 p-2 bg-blue-600 text-white rounded-md"
+					/>
 				</div>
 			</form>
-            {response && <p>{response}</p>}
+			{response && <p>{response}</p>}
 			<Link href={"/"} className="underline">
 				Home
 			</Link>

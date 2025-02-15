@@ -1,15 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { TaskDisplay } from "./components/task";
+import { TaskInput } from "./lib/types";
 
 export default function Home() {
-	type TaskInput = {
-		activity: string;
-		price: number;
-		type: string;
-		booking: boolean;
-		accessibility: number;
-	};
 
 	const [taskData, setTaskData] = useState<TaskInput[] | null>(null);
 
@@ -37,13 +32,13 @@ export default function Home() {
 					({ accessibility, activity, booking, price, type }, index) => {
 						return (
 							<div className="flex items-center gap-4" key={index}>
-								<div className="flex flex-col py-2 px-4 bg-gray-700 rounded-md">
-									<p>Activity : {activity}</p>
-									<p>Price : {price}</p>
-									<p>Type : {type}</p>
-									<p>Booking : {booking}</p>
-									<p>Accessibility : {accessibility}</p>
-								</div>
+								<TaskDisplay
+									accessibility={accessibility}
+									activity={activity}
+									booking={booking}
+									price={price}
+									type={type}
+								/>
 								<button
 									className="bg-red-600 text-white p-2 rounded-md font-bold"
 									onClick={() => removeTask(index)}
@@ -55,7 +50,7 @@ export default function Home() {
 					}
 				)}
 			</div>
-			{!taskData || taskData.length == 0 && <h1>No Tasks available</h1>}
+			{!taskData || (taskData.length == 0 && <h1>No Tasks available</h1>)}
 			<Link href={"/addtask"} className="underline mt-12">
 				Add tasks
 			</Link>
