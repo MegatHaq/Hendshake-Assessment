@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function AddTask() {
-	type TaskInput = {
+	 type TaskInput = {
 		activity: string;
 		price: number;
 		type: string;
