@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function AddTask() {
-	 type TaskInput = {
+	type TaskInput = {
 		activity: string;
 		price: number;
 		type: string;
@@ -38,8 +38,13 @@ export default function AddTask() {
 		// IDEA ABORTED BECAUSE I FORGOT LOCAL STORAGE ONLY WORKS IN BROWSER / CLIENT
 
 		try {
-			localStorage.setItem("taskData", JSON.stringify(data));
-            console.log("Inserted!")
+			const existingTasks = JSON.parse(
+				localStorage.getItem("taskData") || "[]"
+			);
+			const updatedTasks = [...existingTasks, data];
+			localStorage.setItem("taskData", JSON.stringify(updatedTasks));
+			console.log("Inserted!");
+            // using localstorage to make sure that items will still be there once user leaves
 		} catch (error) {
 			console.log(error);
 		}
@@ -59,18 +64,18 @@ export default function AddTask() {
 					<label className="text-white text-left">Price</label>
 					<input type="number" {...register("price")} />
 				</div>
-				<div className="flex flex-col text-white">
-					<label className="text-white text-left">Type</label>
-					{typeOptions.map((item) => {
+				<div className="flex flex-col text-white justify-between">
+					<label className="text-white text-center">Type</label>
+					{typeOptions.map((item,index) => {
 						return (
-							<div className="flex">
+							<div className="flex justify-between" key={index}>
 								{item}
 								<input type="radio" value={item} {...register("type")} />
 							</div>
 						);
 					})}
 				</div>
-				<div className="flex flex-col">
+				<div className="flex gap-4 justify-between">
 					<label className="text-white text-left">Booking required</label>
 					<input type="checkbox" {...register("booking")} />
 				</div>
