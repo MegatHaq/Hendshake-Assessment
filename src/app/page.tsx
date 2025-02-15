@@ -55,7 +55,7 @@ export default function Home() {
 					}
 				)}
 			</div>
-			{!taskData && <h1>No Tasks available</h1>}
+			{!taskData || taskData.length == 0 && <h1>No Tasks available</h1>}
 			<Link href={"/addtask"} className="underline mt-12">
 				Add tasks
 			</Link>

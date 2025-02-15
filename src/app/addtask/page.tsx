@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 // Will be using react hook form as I am used to using RHF.
@@ -27,6 +28,8 @@ export default function AddTask() {
 
 	const { register, handleSubmit } = useForm<TaskInput>();
 
+    const [response,setResponse] = useState<string>()
+
 	const onSubmit: SubmitHandler<TaskInput> = async (data) => {
 		data.accessibility = data.accessibility / 100;
 
@@ -46,6 +49,7 @@ export default function AddTask() {
 			const updatedTasks = [...existingTasks, data];
 			localStorage.setItem("taskData", JSON.stringify(updatedTasks));
 			console.log("Inserted!");
+            setResponse(`successfully inserted activity ${data.activity}`)
 			// using localstorage to make sure that items will still be there once user leaves
 		} catch (error) {
 			console.log(error);
@@ -92,8 +96,11 @@ export default function AddTask() {
 						{...register("accessibility", { required: "true" })}
 					/>
 				</div>
-				<input type="submit" className="bg-white" />
+				<div className="w-full flex justify-center">
+					<input type="submit" className="my-2 p-2 bg-blue-600 text-white rounded-md" />
+				</div>
 			</form>
+            {response && <p>{response}</p>}
 			<Link href={"/"} className="underline">
 				Home
 			</Link>
